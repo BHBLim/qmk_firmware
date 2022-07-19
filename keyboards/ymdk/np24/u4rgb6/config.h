@@ -48,6 +48,10 @@
 /* Set 0 if debouncing isn't needed */
 #define DEBOUNCE 5
 
+// Retain backlight value
+#define RGBLIGHT_LAYERS_RETAIN_VAL
+#define RGBLIGHT_DEFAULT_VAL 100
+
 #define RGB_DI_PIN E2
 #ifdef RGB_DI_PIN
 # define RGBLED_NUM 6

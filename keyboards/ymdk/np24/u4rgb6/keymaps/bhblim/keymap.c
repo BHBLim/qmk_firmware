@@ -48,7 +48,7 @@ Base Layer                               Function Layer 1                       
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_NUM] = LAYOUT_ortho_6x4(
-        KC_ESC,  _______, TG(L_BL), MO(L_RGB),
+        KC_ESC,  _______, TO(L_FN), MO(L_RGB),
         KC_NLCK, KC_PSLS, KC_PAST, KC_BSPC,
         KC_P7,   KC_P8,   KC_P9,   KC_PMNS,
         KC_P4,   KC_P5,   KC_P6,   KC_PPLS,
@@ -56,12 +56,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_P0,   KC_P0,   KC_PDOT, KC_PENT
     ),
     [L_FN] = LAYOUT_ortho_6x4(
-        _______, TG(L_NUM), TG(L_BL), MO(L_RGB),
+        _______, TO(L_NUM), TO(L_FN), MO(L_RGB),
         KC_F10,   KC_F11,   KC_F12,   _______,
         KC_F7,   KC_F8,   KC_F9,   _______,
         KC_F4,   KC_F5,   KC_F6,   _______,
         KC_F1,   KC_F2,   KC_F3,   _______,
-        _______, _______, _______, ___
+        _______, _______, _______, _______
     ),
     [L_RGB] = LAYOUT_ortho_6x4(
         _______, _______, _______, _______,
@@ -73,16 +73,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     )
 };
 
+
+void keyboard_post_init_user(void) {
+  rgblight_enable_noeeprom(); // Enables RGB, without saving settings
+  rgblight_sethsv_noeeprom(0,   0, 100);
+  rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+}
+
 layer_state_t layer_state_set_user(layer_state_t state) {
     switch (get_highest_layer(state)) {
         case L_NUM:
-            rgblight_setrgb(RGB_BLUE);
+            rgblight_sethsv(0,   0, rgblight_get_val());
             break;
         case L_FN:
-            rgblight_setrgb(RGB_RED);
+            rgblight_sethsv(191, 255, rgblight_get_val());
             break;
         default: // for any other layers, or the default layer
-            rgblight_setrgb (RGB_WHITE);
+            rgblight_sethsv (170, 255, rgblight_get_val());
             break;
     }
   return state;
